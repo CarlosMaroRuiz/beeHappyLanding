@@ -2,6 +2,7 @@ import { motion } from "framer-motion"
 import HexagonFloat from "./HexagonFloat"
 import AutonomousBee from "./AutonomousBee"
 import FloatingPollen from "./FloatingPollen"
+import QueenBeeFollower from "./QueenBeeFollower"
 
 const BackgroundEffects = () => {
   return (
@@ -43,6 +44,9 @@ const BackgroundEffects = () => {
 
       {/* Efecto de polen flotante mejorado */}
       <FloatingPollen count={15} />
+
+      {/* Abeja Reina que sigue el mouse */}
+      <QueenBeeFollower />
     </>
   )
 }
