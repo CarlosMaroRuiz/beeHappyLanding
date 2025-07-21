@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from "framer-motion"
 import Navbar from "./navBar"
 import Logo from "./Logo"
@@ -114,14 +115,16 @@ const Header = () => {
   return (
     <>
       <header className="w-full flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 py-4 relative z-50 bg-[#F5E6D3]">
-        <Logo/>
+        <Link to="/" onClick={closeMenu}>
+          <Logo/>
+        </Link>
         
         {/* Desktop Navigation */}
         <div className="hidden lg:block">
           <Navbar onLinkClick={closeMenu} />
         </div>
         
-        {/* Mobile Menu Button - Reemplaza ApiTech en móviles */}
+        {/* Mobile Menu Button */}
         <button 
           className="lg:hidden relative z-50 p-3 focus:outline-none focus:ring-2 focus:ring-[#F4B400] focus:ring-opacity-50 rounded-lg transition-colors hover:bg-[#F4B400] hover:bg-opacity-10"
           onClick={toggleMenu}
@@ -203,49 +206,18 @@ const Header = () => {
                   className="mb-8 text-center"
                   variants={itemVariants}
                 >
-                  <Logo />
+                  <Link to="/" onClick={closeMenu}>
+                    <Logo />
+                  </Link>
                 </motion.div>
                 
                 {/* Navigation Links */}
-                <motion.nav 
+                <motion.div 
                   className="flex flex-col space-y-2"
                   variants={containerVariants}
                 >
-                  {[
-                    { href: "#que-es", text: "Qué es" },
-                    { href: "#monitoreo", text: "Monitoreo" },
-                    { href: "#beneficios", text: "Beneficios" },
-                    { href: "#about", text: "About us" },
-                    { href: "#contacto", text: "Contacto" }
-                  ].map((link, index) => (
-                    <motion.a
-                      key={link.href}
-                      href={link.href}
-                      className="text-[#005076] text-lg font-medium py-4 px-4 rounded-xl hover:bg-[#F4B400] hover:bg-opacity-20 transition-all duration-300 border-l-4 border-transparent hover:border-[#F4B400] group"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        closeMenu()
-                        // Scroll suave a la sección
-                        setTimeout(() => {
-                          const element = document.querySelector(link.href)
-                          if (element) {
-                            element.scrollIntoView({ behavior: 'smooth' })
-                          }
-                        }, 300)
-                      }}
-                      variants={itemVariants}
-                      whileHover={{ 
-                        scale: 1.02,
-                        x: 8
-                      }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <span className="group-hover:translate-x-1 transition-transform duration-300 inline-block">
-                        {link.text}
-                      </span>
-                    </motion.a>
-                  ))}
-                </motion.nav>
+                  <Navbar isMobile={true} onLinkClick={closeMenu} />
+                </motion.div>
 
                 {/* CTA Button en móvil */}
                 <motion.div 
