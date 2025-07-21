@@ -38,7 +38,7 @@ const Navbar = ({ isMobile = false, onLinkClick }) => {
   return (
     <nav className={containerClass}>
       <Link 
-        to="/que-es" 
+        to="/what" 
         className={`${linkClass} ${location.pathname === '/what' && !isMobile ? activeLinkClass : ''}`}
         onClick={handleClick}
       >
