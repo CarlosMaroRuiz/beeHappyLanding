@@ -9,7 +9,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<IndexPage />} />
-          <Route path="/que-es" element={<WhatThisPage />} />
+          <Route path="/what" element={<WhatThisPage />} />
         </Route>
       </Routes>
     </Router>

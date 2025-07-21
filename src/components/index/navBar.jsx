@@ -39,7 +39,7 @@ const Navbar = ({ isMobile = false, onLinkClick }) => {
     <nav className={containerClass}>
       <Link 
         to="/que-es" 
-        className={`${linkClass} ${location.pathname === '/que-es' && !isMobile ? activeLinkClass : ''}`}
+        className={`${linkClass} ${location.pathname === '/what' && !isMobile ? activeLinkClass : ''}`}
         onClick={handleClick}
       >
         Qué es

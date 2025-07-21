@@ -1,5 +1,5 @@
 import { motion } from "framer-motion"
-import HeroSection from "../components/whatThis/HeroSection"
+import HeroSection from "../components/what/HeroSection"
 
 
 const WhatThisPage = () => {

@@ -1,22 +1,18 @@
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
+import backgroundImage from "../../assets/WhatThisBackground.png"; // Ajusta la ruta según la ubicación de la imagen
 
 const HeroSection = () => {
   return (
     <div className="relative h-screen flex items-center justify-center">
-      {/* Background Image - MÉTODO CORRECTO */}
+      {/* Background Image */}
       <img 
-        src="/img/whatThis/WhatThisBackground.png"
+        src={backgroundImage}
         alt="Panal de abejas - BeeHappy"
         className="absolute inset-0 w-full h-full object-cover z-0"
         onError={(e) => {
-          console.log('Error loading image:', e.target.src);
-          console.log('Trying to load from:', window.location.origin + '/img/whatThis/WhatThisBackground.png');
-          // Mostrar el fallback ocultando la imagen
           e.target.style.display = 'none';
         }}
-        onLoad={() => {
-          console.log('Image loaded successfully');
-        }}
+        onLoad={() => {}}
       />
       
       {/* Fallback background con gradiente si la imagen no carga */}
@@ -50,7 +46,7 @@ const HeroSection = () => {
         </motion.div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HeroSection
+export default HeroSection;
