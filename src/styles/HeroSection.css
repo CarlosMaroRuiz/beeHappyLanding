@@ -1,8 +1,24 @@
-
+/* Clase para aplicar la imagen de fondo */
 .hero-background {
-  background-image: url('/img/index/8.jpg');
+  background-image: url('/img/index/9.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  width: 100%;
+}
 
+/* Estilo para el contenedor con efecto cristal mejorado */
+.frosted-glass {
+  background: linear-gradient(135deg, rgba(229, 231, 235, 0.5) 0%, rgba(255, 255, 255, 0.3) 100%); /* Gradiente para efecto cristal */
+  backdrop-filter: blur(20px); /* Aumentar blur para un efecto cristal más fuerte */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Borde más claro para un look cristalino */
+  border-radius: 1rem; /* Equivalente a rounded-2xl */
+  padding: 4rem; /* Equivalente a p-8 */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Equivalente a shadow-2xl */
+}
+
+@media (min-width: 768px) {
+  .frosted-glass {
+    padding: 3rem; /* Equivalente a md:p-12 */
+  }
 }
