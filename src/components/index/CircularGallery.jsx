@@ -322,11 +322,15 @@ class App {
       font = "bold 30px Figtree",
       scrollSpeed = 2,
       scrollEase = 0.05,
+      autoScroll = false,
+      autoScrollSpeed = 0.5,
     } = {}
   ) {
     document.documentElement.classList.remove("no-js");
     this.container = container;
     this.scrollSpeed = scrollSpeed;
+    this.autoScroll = autoScroll;
+    this.autoScrollSpeed = autoScrollSpeed;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
     this.onCheckDebounce = debounce(this.onCheck, 200);
     this.createRenderer();
@@ -447,6 +451,11 @@ class App {
   }
   
   update() {
+    // Auto-scroll si está habilitado
+    if (this.autoScroll) {
+      this.scroll.target += this.autoScrollSpeed;
+    }
+    
     this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease);
     const direction = this.scroll.current > this.scroll.last ? "right" : "left";
     if (this.medias) {
@@ -499,6 +508,8 @@ const CircularGallery = ({
   font = "bold 30px Figtree",
   scrollSpeed = 2,
   scrollEase = 0.05,
+  autoScroll = false,
+  autoScrollSpeed = 0.5,
 }) => {
   const containerRef = useRef(null);
   
@@ -510,13 +521,15 @@ const CircularGallery = ({
       borderRadius, 
       font, 
       scrollSpeed, 
-      scrollEase 
+      scrollEase,
+      autoScroll,
+      autoScrollSpeed
     });
     
     return () => {
       app.destroy();
     };
-  }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase]);
+  }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase, autoScroll, autoScrollSpeed]);
   
   return <div className="circular-gallery" ref={containerRef} />;
 };

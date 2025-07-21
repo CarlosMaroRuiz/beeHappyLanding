@@ -18,11 +18,18 @@ const AutonomousBee = ({ id, delay = 0 }) => {
     return () => window.removeEventListener('resize', updateDimensions)
   }, [])
 
-  // Generar puntos de waypoint aleatorios para cada abeja
+  // Generar puntos de waypoint aleatorios adaptados al tamaño de pantalla
   const generateWaypoints = () => {
-    const numPoints = 6 + Math.floor(Math.random() * 4) // 6-9 puntos
+    const isMobile = screenDimensions.width < 640
+    const isTablet = screenDimensions.width < 1024
+    
+    // Menos puntos en dispositivos móviles para mejor rendimiento
+    const numPoints = isMobile ? 4 + Math.floor(Math.random() * 2) : // 4-5 puntos
+                     isTablet ? 5 + Math.floor(Math.random() * 3) :   // 5-7 puntos  
+                     6 + Math.floor(Math.random() * 4)                // 6-9 puntos
+    
     const points = []
-    const margin = 100
+    const margin = isMobile ? 50 : isTablet ? 75 : 100
     
     for (let i = 0; i < numPoints; i++) {
       points.push({
@@ -35,14 +42,15 @@ const AutonomousBee = ({ id, delay = 0 }) => {
 
   const waypoints = generateWaypoints()
   
-  // Crear path de movimiento más natural
+  // Crear path de movimiento más natural con ajustes responsive
   const createBezierPath = () => {
     const pathX = []
     const pathY = []
+    const isMobile = screenDimensions.width < 640
     
     waypoints.forEach((point, index) => {
-      // Agregar variación en el camino
-      const variance = 50 + Math.random() * 100
+      // Menos variación en móviles para movimientos más suaves
+      const variance = isMobile ? 30 + Math.random() * 50 : 50 + Math.random() * 100
       const offsetX = (Math.random() - 0.5) * variance
       const offsetY = (Math.random() - 0.5) * variance
       
@@ -55,13 +63,21 @@ const AutonomousBee = ({ id, delay = 0 }) => {
 
   const { pathX, pathY } = createBezierPath()
 
-  // Comportamientos específicos para cada abeja
+  // Comportamientos específicos adaptados al dispositivo
   const beePersonality = {
-    speed: 8 + Math.random() * 6, // Velocidad entre 8-14 segundos
-    pauseDuration: 1 + Math.random() * 3, // Pausas de 1-4 segundos
-    explorationRadius: 30 + Math.random() * 70, // Radio de exploración
-    activity: Math.random() > 0.3 ? 'explorer' : 'collector' // Tipo de comportamiento
+    speed: screenDimensions.width < 640 ? 6 + Math.random() * 4 : // Más rápido en móvil
+           screenDimensions.width < 1024 ? 7 + Math.random() * 5 : // Intermedio en tablet
+           8 + Math.random() * 6, // Velocidad normal en desktop
+    pauseDuration: 1 + Math.random() * 3,
+    explorationRadius: screenDimensions.width < 640 ? 20 + Math.random() * 40 :
+                      screenDimensions.width < 1024 ? 25 + Math.random() * 55 :
+                      30 + Math.random() * 70,
+    activity: Math.random() > 0.3 ? 'explorer' : 'collector'
   }
+
+  // Tamaño de abeja responsive
+  const beeSize = screenDimensions.width < 640 ? 'w-4 h-4' :
+                 screenDimensions.width < 1024 ? 'w-5 h-5' : 'w-6 h-6'
 
   return (
     <motion.div
@@ -112,7 +128,7 @@ const AutonomousBee = ({ id, delay = 0 }) => {
         <motion.img
           src={bee} 
           alt="Abeja autónoma"
-          className="w-6 h-6 object-contain"
+          className={`${beeSize} object-contain`}
           animate={{ 
             rotate: [0, 8, -8, 0],
             scale: [1, 1.15, 0.95, 1],
@@ -127,11 +143,14 @@ const AutonomousBee = ({ id, delay = 0 }) => {
           }}
         />
         
-        {/* Estela de la abeja */}
+        {/* Estela de la abeja - responsive */}
         <motion.div
-          className="absolute -z-10 w-8 h-1 bg-gradient-to-r from-[#FFD700] to-transparent rounded-full opacity-30"
+          className={`absolute -z-10 ${
+            screenDimensions.width < 640 ? 'w-4 h-0.5' : 
+            screenDimensions.width < 1024 ? 'w-6 h-0.5' : 'w-8 h-1'
+          } bg-gradient-to-r from-[#FFD700] to-transparent rounded-full opacity-30`}
           style={{
-            left: '-20px',
+            left: screenDimensions.width < 640 ? '-10px' : '-20px',
             top: '50%',
             transform: 'translateY(-50%)'
           }}
@@ -147,10 +166,12 @@ const AutonomousBee = ({ id, delay = 0 }) => {
         />
       </motion.div>
 
-      {/* Comportamiento especial: recolección de polen */}
+      {/* Comportamiento especial: recolección de polen - responsive */}
       {beePersonality.activity === 'collector' && (
         <motion.div
-          className="absolute w-2 h-2 bg-[#FFD700] rounded-full opacity-60"
+          className={`absolute ${
+            screenDimensions.width < 640 ? 'w-1 h-1' : 'w-2 h-2'
+          } bg-[#FFD700] rounded-full opacity-60`}
           style={{
             left: '-5px',
             top: '-5px'

@@ -16,19 +16,19 @@ const IndexPage = () => {
       initial="hidden"
       animate="visible"
     >
-   
+      {/* Header responsive */}
       <motion.div variants={headerVariants}>
         <Header/>
       </motion.div>
       
-      <main>
-     
+      {/* Main content responsive */}
+      <main className="pb-8 sm:pb-12 md:pb-16">
         <motion.div variants={heroVariants}>
           <HeroSection/>
         </motion.div>
       </main>
 
-
+      {/* Background effects - se ajustan automáticamente */}
       <BackgroundEffects />
     </motion.div>
   )
