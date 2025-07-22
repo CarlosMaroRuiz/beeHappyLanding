@@ -1,9 +1,140 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: #FFF8DC;
   margin: 0;
   padding: 0;
-  height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden; /* Solo prevenir scroll horizontal */
+}
+
+/* Estilos para las secciones */
+section {
+  scroll-margin-top: 100px; /* Espacio para el header fijo */
+}
+
+/* Ajuste específico para la primera sección */
+section#home {
+  scroll-margin-top: 0; /* Sin margen para home ya que tiene padding-top */
+}
+
+/* Ajuste para la segunda sección */
+section#what {
+  scroll-margin-top: 80px; /* Margen ligeramente menor para mejor transición */
+}
+
+/* Personalizar la scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #F4B400;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #E6A000;
+}
+
+/* Optimizaciones para parallax */
+.parallax-element {
+  will-change: transform;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+/* Glassmorphism mejorado */
+.glass-effect {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+/* Animaciones de entrada suaves */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatingSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(244, 180, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(244, 180, 0, 0.8);
+  }
+}
+
+/* Utilidades para parallax */
+.slow-parallax {
+  transform: translate3d(0, var(--scroll-offset, 0), 0);
+}
+
+.fast-parallax {
+  transform: translate3d(0, calc(var(--scroll-offset, 0) * 2), 0);
+}
+
+/* Hover effects mejorados */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Efectos de profundidad */
+.depth-1 { z-index: 10; }
+.depth-2 { z-index: 9; }
+.depth-3 { z-index: 8; }
+.depth-4 { z-index: 7; }
+.depth-5 { z-index: 6; }
+
+/* Respeta las preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .parallax-element {
+    transform: none !important;
+  }
+}
+
+/* Optimizaciones para dispositivos móviles */
+@media (max-width: 768px) {
+  .parallax-element {
+    transform: none; /* Reduce parallax en móviles para mejor performance */
+  }
+  
+  section {
+    scroll-margin-top: 80px;
+  }
 }

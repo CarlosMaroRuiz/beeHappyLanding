@@ -1,11 +1,35 @@
 import { useState, useEffect } from "react"
-import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from "framer-motion"
 import Navbar from "./navBar"
 import Logo from "./Logo"
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('home')
+
+  // Detectar sección activa
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['home', 'what', 'monitoreo', 'beneficios', 'about', 'contacto'] // Todas las secciones
+      const scrollPosition = window.scrollY + 100
+
+      for (let section of sections) {
+        const element = document.getElementById(section)
+        if (element) {
+          const offsetTop = element.offsetTop
+          const height = element.offsetHeight
+          
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + height) {
+            setActiveSection(section)
+            break
+          }
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   // Cerrar menú al cambiar el tamaño de ventana
   useEffect(() => {
@@ -38,6 +62,18 @@ const Header = () => {
 
   const closeMenu = () => {
     setIsMenuOpen(false)
+  }
+
+  // Función para scroll suave
+  const scrollToSection = (sectionId) => {
+    closeMenu()
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
   }
 
   // Animaciones para el menú
@@ -114,14 +150,19 @@ const Header = () => {
 
   return (
     <>
-      <header className="w-full flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 py-4 relative z-50 bg-[#F5E6D3]">
-        <Link to="/" onClick={closeMenu}>
+      <motion.header 
+        className="fixed top-0 w-full flex items-center justify-between px-4 sm:px-6 md:px-8 lg:px-12 py-4 z-50 bg-[#F5E6D3]/90 backdrop-blur-md border-b border-[#F4B400]/20"
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <button onClick={() => scrollToSection('home')}>
           <Logo/>
-        </Link>
+        </button>
         
         {/* Desktop Navigation */}
         <div className="hidden lg:block">
-          <Navbar onLinkClick={closeMenu} />
+          <Navbar activeSection={activeSection} onSectionClick={scrollToSection} />
         </div>
         
         {/* Mobile Menu Button */}
@@ -155,7 +196,7 @@ const Header = () => {
         
         {/* ApiTech - Solo visible en desktop */}
         <h2 className="hidden lg:block text-[#F4B400] font-bold text-lg sm:text-xl md:text-2xl">ApiTech</h2>
-      </header>
+      </motion.header>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence mode="wait">
@@ -206,9 +247,9 @@ const Header = () => {
                   className="mb-8 text-center"
                   variants={itemVariants}
                 >
-                  <Link to="/" onClick={closeMenu}>
+                  <button onClick={() => scrollToSection('home')}>
                     <Logo />
-                  </Link>
+                  </button>
                 </motion.div>
                 
                 {/* Navigation Links */}
@@ -216,7 +257,7 @@ const Header = () => {
                   className="flex flex-col space-y-2"
                   variants={containerVariants}
                 >
-                  <Navbar isMobile={true} onLinkClick={closeMenu} />
+                  <Navbar isMobile={true} activeSection={activeSection} onSectionClick={scrollToSection} />
                 </motion.div>
 
                 {/* CTA Button en móvil */}
@@ -226,7 +267,15 @@ const Header = () => {
                 >
                   <motion.button 
                     className="w-full bg-gradient-to-r from-[#F4B400] to-[#E6A000] text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-                    onClick={closeMenu}
+                    onClick={() => {
+                      const element = document.getElementById('contacto')
+                      if (element) {
+                        scrollToSection('contacto')
+                      } else {
+                        console.log('Sección contacto próximamente disponible')
+                        closeMenu()
+                      }
+                    }}
                     whileHover={{ 
                       scale: 1.02,
                       boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"

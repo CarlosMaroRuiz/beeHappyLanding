@@ -1,11 +1,8 @@
-import { Link, useLocation } from 'react-router-dom'
-
-const Navbar = ({ isMobile = false, onLinkClick }) => {
-  const location = useLocation()
+const Navbar = ({ isMobile = false, activeSection, onSectionClick }) => {
   
   const linkClass = isMobile 
     ? "text-[#005076] text-xl font-medium py-3 px-4 rounded-lg hover:bg-[#F4B400] hover:bg-opacity-20 transition-colors border-b border-[#005076] border-opacity-20 block" 
-    : "hover:text-[#F4B400] transition-colors duration-200 relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-[#F4B400] after:transition-all after:duration-300 hover:after:w-full"
+    : "hover:text-[#F4B400] transition-colors duration-200 relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-[#F4B400] after:transition-all after:duration-300 hover:after:w-full cursor-pointer"
 
   const activeLinkClass = "text-[#F4B400] after:w-full"
 
@@ -13,62 +10,59 @@ const Navbar = ({ isMobile = false, onLinkClick }) => {
     ? "flex flex-col space-y-6" 
     : "flex flex-col lg:flex-row gap-4 lg:gap-8 xl:gap-14 text-base lg:text-lg xl:text-xl px-2 pb-1"
 
-  const handleClick = () => {
-    if (onLinkClick) {
-      onLinkClick()
+  const getButtonClass = (section) => {
+    const baseClass = linkClass
+    if (!isMobile && activeSection === section) {
+      return `${baseClass} ${activeLinkClass}`
     }
+    return baseClass
   }
 
-  const handleScrollClick = (sectionId) => {
-    handleClick()
-    // Si estamos en la página principal, hacer scroll
-    if (location.pathname === '/') {
-      setTimeout(() => {
-        const element = document.querySelector(sectionId)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' })
-        }
-      }, 100)
+  const handleClick = (section) => {
+    // Si la sección existe, hacer scroll, si no, mostrar mensaje temporal
+    const element = document.getElementById(section)
+    if (element) {
+      onSectionClick(section)
     } else {
-      // Si no estamos en la página principal, navegar a home y luego hacer scroll
-      window.location.href = `/${sectionId}`
+      // Mensaje temporal para secciones no implementadas
+      console.log(`Sección "${section}" próximamente disponible`)
+      // Opcionalmente podrías mostrar un toast o notificación aquí
     }
   }
 
   return (
     <nav className={containerClass}>
-      <Link 
-        to="/what" 
-        className={`${linkClass} ${location.pathname === '/what' && !isMobile ? activeLinkClass : ''}`}
-        onClick={handleClick}
+      <button 
+        className={getButtonClass('what')}
+        onClick={() => handleClick('what')}
       >
         Qué es
-      </Link>
+      </button>
       
       <button 
-        className={linkClass}
-        onClick={() => handleScrollClick('#monitoreo')}
+        className={getButtonClass('monitoreo')}
+        onClick={() => handleClick('monitoreo')}
       >
         Monitoreo
       </button>
       
       <button 
-        className={linkClass}
-        onClick={() => handleScrollClick('#beneficios')}
+        className={getButtonClass('beneficios')}
+        onClick={() => handleClick('beneficios')}
       >
         Beneficios
       </button>
       
       <button 
-        className={linkClass}
-        onClick={() => handleScrollClick('#about')}
+        className={getButtonClass('about')}
+        onClick={() => handleClick('about')}
       >
         About us
       </button>
       
       <button 
-        className={linkClass}
-        onClick={() => handleScrollClick('#contacto')}
+        className={getButtonClass('contacto')}
+        onClick={() => handleClick('contacto')}
       >
         Contacto
       </button>
@@ -77,3 +71,4 @@ const Navbar = ({ isMobile = false, onLinkClick }) => {
 };
 
 export default Navbar;
+

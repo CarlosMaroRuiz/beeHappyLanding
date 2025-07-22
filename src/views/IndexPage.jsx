@@ -9,7 +9,7 @@ import {
 const IndexPage = () => {
   return (
     <motion.div 
-      className="relative overflow-hidden"
+      className="relative overflow-hidden pt-20 sm:pt-18 md:pt-28" // Agregado padding-top para el header fijo
       variants={containerVariants}
       initial="hidden"
       animate="visible"

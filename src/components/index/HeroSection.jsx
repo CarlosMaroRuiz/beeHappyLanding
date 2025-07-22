@@ -14,7 +14,7 @@ const HeroSection = () => {
         </h1>
       </div>
       
-      {/* Gallery Container con altura responsive */}
+      {/* Gallery Container con altura responsive z*/}
       <div 
         className="relative" 
         style={{ 

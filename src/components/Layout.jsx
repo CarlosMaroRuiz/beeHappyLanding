@@ -1,12 +1,11 @@
-import { Outlet } from 'react-router-dom'
 import Header from "../components/index/Header"
 
-const Layout = () => {
+const Layout = ({ children }) => {
   return (
     <div className="min-h-screen bg-[#F5E6D3] relative">
       <Header />
       <main>
-        <Outlet />
+        {children}
       </main>
     </div>
   )
